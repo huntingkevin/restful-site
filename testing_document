@@ -1,0 +1,103 @@
+echo "------------------------insert questions-----------------------------"
+curl -d "user=jerry&detail=what is my name?" localhost:8880/questions
+echo -e "\n"
+curl -d "user=kevin&detail=where do I live?" localhost:8880/questions
+echo -e "\n"
+curl -d "user=han&detail=when does the sports center open?" localhost:8880/questions
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------insert answers-------------------------------"
+curl -d "user=kevin&detail=jerry is your name." localhost:8880/question/1/answers
+echo -e "\n"
+curl -d "user=jerry&detail=why you do not know your own name?" localhost:8880/question/1/answers
+echo -e "\n"
+curl -d "user=lily&detail=may be southampton." localhost:8880/question/2/answers
+echo -e "\n"
+curl -d "user=joy&detail=we do not care." localhost:8880/question/2/answers
+echo -e "\n"
+curl -d "user=kitty&detail=monday to friday 9.00-21.00." localhost:8880/question/3/answers
+echo -e "\n"
+curl -d "user=ivy&detail=it is the same time during saturday and sunday." localhost:8880/question/3/answers
+echo -e "\n"
+curl -d "user=Bake&detail=sports center closes at 23.00 in friday." localhost:8880/question/3/answers
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------insert comments of questions-----------------"
+curl -d "user=han&detail=it is a good queston." localhost:8880/question/1/q_comments
+echo -e "\n"
+curl -d "user=oneal&detail=haha..." localhost:8880/question/1/q_comments
+echo -e "\n"
+curl -d "user=frank&detail=how can i know where you are living." localhost:8880/question/2/q_comments
+echo -e "\n"
+curl -d "user=lee&detail=lundon?" localhost:8880/question/2/q_comments
+echo -e "\n"
+curl -d "user=mike&detail=ask the administrator." localhost:8880/question/3/q_comments
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------insert comments------------------------------"
+curl -d "user=jerry&detail=I want you to guess." localhost:8880/question/1/answer/2/comments
+echo -e "\n"
+curl -d "user=gerry&detail=eh.. i do not know." localhost:8880/question/1/answer/2/comments
+echo -e "\n"
+curl -d "user=white&detail=you are stupid." localhost:8880/question/1/answer/2/comments
+echo -e "\n"
+curl -d "user=joy&detail=bingo." localhost:8880/question/1/answer/1/comments
+echo -e "\n"
+curl -d "user=lily&detail=you are right." localhost:8880/question/2/answer/3/comments
+echo -e "\n"
+curl -d "user=bake&detail=thanks." localhost:8880/question/3/answer/5/comments
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------get different pages--------------------------"
+echo "...get all questions"
+curl localhost:8880/questions
+echo -e "\n\n...get one question"
+curl localhost:8880/question/1
+echo -e "\n\n...get all answers"
+curl localhost:8880/question/1/answers
+echo -e "\n\n...get an answer"
+curl localhost:8880/question/1/answer/1
+echo -e "\n\n...get all comments of questions"
+curl localhost:8880/question/1/q_comments
+echo -e "\n\n...get one comments of a question"
+curl localhost:8880/question/1/q_comment/1
+echo -e "\n\n...get all comments of an answer"
+curl localhost:8880/question/1/answer/2/comments
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------update different pages-----------------------"
+echo -e "...update a question"
+curl -X PUT -d user=jerry -d detail="jerry is my name?" localhost:8880/question/1
+echo -e "\n\n...udpate an answer"
+curl -X PUT -d user=kevin -d detail="jerry is not your name." localhost:8880/question/1/answer/1
+echo -e "\n\n...update a comment of a question"
+curl -X PUT -d user=gerry -d detail="..." localhost:8880/question/1/q_comment/2
+echo -e "\n\n...update a comment of an answer"
+curl -X PUT -d user=joy -d detail="you are wrong." localhost:8880/question/1/answer/1/comment/4
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------delete different pages----------------------"
+echo -e "...delete a comment"
+curl -X DELETE localhost:8880/question/1/answer/2/comment/3
+echo -e "\n\n...delete an answer"
+curl -X DELETE localhost:8880/question/3/answer/5
+echo -e "\n\n...delete a comment of a question"
+curl -X DELETE localhost:8880/question/2/q_comment/4
+echo -e "\n\n...delete a question"
+curl -X DELETE localhost:8880/question/2
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------get a head of a page------------------------"
+curl --HEAD localhost:8880/questions
+echo -e "\n---------------------------------------------------------------------\n"
+
+echo "------------------------status code---------------------------------"
+echo -e "...200"
+curl -i localhost:8880/question/1/answers
+echo -e "\n\n...201"  
+curl -i -d "user=oppo&detail=where is southampton?" localhost:8880/questions
+echo -e "\n\n...204"
+curl -i -X PUT -d user=oppo -d detail="where is southampton?" localhost:8880/question/4
+echo -e "\n\n...404"
+curl -i localhost:8880/question/110
+echo -e "\n---------------------------------------------------------------------\n"
